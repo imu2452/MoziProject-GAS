@@ -10,9 +10,9 @@ function doPost(e) {
   // 応答メッセージ用のAPI URL
   var url = 'https://api.line.me/v2/bot/message/reply';
 
-  var template_start = '文字数貯金です。 ';
+  var template_start = '文字数貯金です。 \n';
   var template_finish = 'またのご利用をお待ちしております。';
-  var botMessage = userMessage + ' 文字の入金を確認しました。';
+  var botMessage = userMessage + ' 文字の入金を確認しました。\n';
   var replyMessage = template_start + botMessage + template_finish;
   console.log('DEBUG replyMessage: ' + replyMessage)
 
