@@ -19,8 +19,12 @@ function getNowYMD(){
 
 
 // スプレッドシートに情報を登録
-function setData(values){
-  sheet.getRange(1, 1, 1, 3).setValues(values);
+function setData(userMessage, total, updateDate){
+  // sheet.getRange(1, 1, 1, 3).setValues(values);
+  sheet.getRange("A1").setValue(userMessage);
+  sheet.getRange("B1").setValue(total);
+  sheet.getRange("C1").setValue(updateDate);
+  
 }
 
 function doPost(e) {
@@ -34,22 +38,21 @@ function doPost(e) {
   // 更新日時
   var updateDate = getNowYMD();
   // ユーザーのメッセージを取得
-  var userMessage = JSON.parse(e.postData.contents).events[0].message.text;
+  var userMessageJson = JSON.parse(e.postData.contents).events[0].message.text;
+  var userMessage = Number(userMessageJson);
 
   // totalを取得
-  var total = Number(sheet.getRange("B1").getValue);
-  console.log("get total: +" + total);
+  var totalRange = sheet.getRange("B1");
+  var total = Number(totalRange.getValue());
 
-  total += Number(userMessage);
-  console.log("set total: +" + total);
-
+  total += userMessage;
 
   // 返信内容
   var botMessage = updateDate + " 現在、 \n 【" + userMessage + "】文字の入金を確認しました。 \n" + "現在の貯金額は " + total + " 円です。 \n";
   
   // データ登録
-  var values = [userMessage, total, updateDate]
-  setData(values);
+  // var values = [[userMessage, total, updateDate]];
+  setData(userMessage, total, updateDate);
   var replyMessage = template_start + botMessage + template_finish;
 
   // 返信メッセージ送信
